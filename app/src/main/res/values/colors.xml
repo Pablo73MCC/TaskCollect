@@ -4,7 +4,7 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="buttonColor">#EE9FBA</color>
+    <color name="backgroundColor">#EE9FBA</color>
     <color name="buttonTextColor">#FFFFFF</color>
 
     <!-- Colores para el modo oscuro -->
@@ -13,4 +13,6 @@
     <color name="colorAccentDarkMode">#80CBC4</color>
     <color name="buttonColorDark">#80CBC4</color>
     <color name="buttonTextColorDark">#000000</color>
+    <color name="backgroundColorDark">#424242</color>
+
 </resources>
