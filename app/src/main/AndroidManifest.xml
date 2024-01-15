@@ -12,24 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskCollect"
         tools:targetApi="31">
-
-        <!-- Esta webada debería ser el main ahora  -->
+        <activity
+            android:name=".ui.theme.Pantalla_Nota"
+            android:exported="false" />
+        <!-- Esta webada debería ser el main ahora -->
         <activity
             android:name=".Pantalla_Inicio"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- MainActivity ya no tendrá el filtro de intención MAIN y LAUNCHER -->
+        </activity> <!-- MainActivity ya no tendrá el filtro de intención MAIN y LAUNCHER -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TaskCollect">
-        </activity>
+            android:theme="@style/Theme.TaskCollect"></activity>
     </application>
 
 </manifest>

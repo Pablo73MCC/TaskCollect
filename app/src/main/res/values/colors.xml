@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Colores para el modo claro -->
-    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="backgroundColor">#EE9FBA</color>
-    <color name="buttonTextColor">#FFFFFF</color>
+    <color name="buttonTextColor">#000000</color>
 
     <!-- Colores para el modo oscuro -->
     <color name="colorPrimaryDarkMode">#000000</color>

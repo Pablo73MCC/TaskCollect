@@ -3,4 +3,6 @@
     <string name="Sexo">Crear tarea</string>
     <string name="Sexo2">Modo Gay</string>
     <string name="Sexo3">Que tarea deseas buscar</string>
+    <string name="Titulo">Titulo</string>
+    <string name="Texto">Crear nueva nota</string>
 </resources>
