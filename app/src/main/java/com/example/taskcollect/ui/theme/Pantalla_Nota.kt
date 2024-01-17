@@ -32,6 +32,7 @@ class Pantalla_Nota : AppCompatActivity() {
             val contenido = contenidoEditText.text.toString()
             val id = generateUniqueId()
             guardarNota(id, titulo, contenido)
+            finish()
         }
     }
 
