@@ -1,76 +1,55 @@
 package com.example.taskcollect
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import android.preference.PreferenceManager
-import android.widget.Switch
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.taskcollect.ui.theme.Pantalla_Nota
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
+
 
 class Pantalla_Inicio : AppCompatActivity() {
 
-    private lateinit var editTextTask: EditText
-    private lateinit var buttonAddTask: Button
-    private lateinit var listViewTasks: ListView
-    private lateinit var switchDarkMode: Switch
-    private lateinit var tasksList: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val darkModeIsActive = sharedPreferences.getBoolean("dark_mode", false)
-
-        setTheme(if (darkModeIsActive) R.style.Theme_TaskCollect_Dark else R.style.Theme_TaskCollect)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_inicio)
 
-        if (darkModeIsActive) {
-            setTheme(R.style.Theme_TaskCollect_Dark)
-        } else {
-            setTheme(R.style.Theme_TaskCollect)
+        val addButton: FloatingActionButton = findViewById(R.id.add_button)
+        addButton.setOnClickListener {
+            val intent = Intent(this, Pantalla_Nota::class.java)
+            startActivity(intent)
         }
-        setContentView(R.layout.activity_pantalla_inicio)
+        val taskList = cargarNotas() // Carga las notas almacenadas
+        val tasksRecyclerView = findViewById<RecyclerView>(R.id.tasks_recyclerview)
+        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
+        tasksRecyclerView.adapter = Recycler_class(taskList)
+    }
 
-        // Inicializa los elementos de la interfaz de usuario
-        editTextTask = findViewById(R.id.editTextTask)
-        buttonAddTask = findViewById(R.id.buttonAddTask)
-        listViewTasks = findViewById(R.id.listViewTasks)
-        switchDarkMode = findViewById(R.id.switchDarkMode)
-
-
-        switchDarkMode.isChecked = darkModeIsActive
-        // Listener para el cambio de estado del Switch
-        switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            with(sharedPreferences.edit()) {
-                putBoolean("dark_mode", isChecked)
-                apply()
-            }
-            // Recargar la actividad para aplicar el cambio de tema
-            recreate()
-        }
-
-
-        // Inicializa la lista de tareas
-        tasksList = mutableListOf()
-
-        // Crea un adaptador para la ListView
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, tasksList)
-        listViewTasks.adapter = adapter
-
-        // Agrega una tarea cuando se hace clic en el botón "Agregar Tarea"
-        buttonAddTask.setOnClickListener {
-            val task = editTextTask.text.toString()
-            if (task.isNotEmpty()) {
-                tasksList.add(task)
-                adapter.notifyDataSetChanged()
-                editTextTask.text.clear()
+    private fun cargarNotas(): List<Recycler_class.Nota> {
+        val notas = mutableListOf<Recycler_class.Nota>()
+        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
+        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
+        for (i in 0 until totalNotas) {
+            sharedPreferences.getString("nota_$i", null)?.let {
+                val partes = it.split("#")
+                if (partes.size >= 3) {
+                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
+                }
             }
         }
-
+        return notas
+    }
+    override fun onResume() {
+        super.onResume()
+        val taskList = cargarNotas() // Carga las notas almacenadas
+        val tasksRecyclerView = findViewById<RecyclerView>(R.id.tasks_recyclerview)
+        tasksRecyclerView.adapter = Recycler_class(taskList)
     }
 }
