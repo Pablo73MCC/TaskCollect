@@ -14,23 +14,35 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 class Pantalla_Nota : AppCompatActivity() {
+
+    private var notaId: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_nota)
 
+        // Esta madre es el boton de regresar
         val backButton: ImageButton = findViewById(R.id.btn_back)
         backButton.setOnClickListener {
-            finish() // Cierra la actividad y regresa a la anterior
+            finish()
         }
 
+        // Esta madre es el boton de guardar y te regresa a la pagina de inicio
         val tituloEditText: EditText = findViewById(R.id.txt_titulo)
         val contenidoEditText: EditText = findViewById(R.id.txt_nota)
+
+        // Verificar si estamos editando una nota existente
+        notaId = intent.getStringExtra("id") // El ID de la nota si se está editando, o null si es nueva
+        if(notaId != null) {
+            // Estamos editando una nota existente
+            tituloEditText.setText(intent.getStringExtra("titulo"))
+            contenidoEditText.setText(intent.getStringExtra("contenido"))
+        }
 
         val saveButton: Button = findViewById(R.id.btn_save)
         saveButton.setOnClickListener {
             val titulo = tituloEditText.text.toString()
             val contenido = contenidoEditText.text.toString()
-            val id = generateUniqueId()
+            val id = notaId ?: generateUniqueId() // Usar notaId si está editando, sino generar uno nuevo
             guardarNota(id, titulo, contenido)
             finish()
         }
@@ -38,28 +50,19 @@ class Pantalla_Nota : AppCompatActivity() {
 
     private fun guardarNota(id: String, titulo: String, contenido: String) {
         val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
-        val nota = "$id#$titulo#$contenido"
-        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
-        with(sharedPreferences.edit()) {
-            putString("nota_$totalNotas", nota)
-            putInt("totalNotas", totalNotas + 1)
-            apply()
+        val editor = sharedPreferences.edit()
+        // Si es una nueva nota, actualizamos el contador de totalNotas y usamos ese contador como ID.
+        val nuevaId = if (notaId == null) {
+            val totalNotas = sharedPreferences.getInt("totalNotas", 0)
+            editor.putInt("totalNotas", totalNotas + 1)
+            totalNotas.toString()
+        } else {
+            id
         }
-    }
-    private fun obtenerNotas(): List<Recycler_class.Nota> {
-        val notas = mutableListOf<Recycler_class.Nota>()
-        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
-        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
-        for (i in 0 until totalNotas) {
-            sharedPreferences.getString("nota_$i", null)?.let { nota ->
-                val partes = nota.split("#")
-                if (partes.size >= 3) {
+        editor.putString("nota_$nuevaId", "$nuevaId#$titulo#$contenido")
+        editor.apply()
 
-                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
-                }
-            }
-        }
-        return notas
+        Log.d("Pantalla_Nota", "Nota guardada: $titulo con ID: $nuevaId")
     }
 
 
