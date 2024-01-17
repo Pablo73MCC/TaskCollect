@@ -28,32 +28,43 @@ class Pantalla_Nota : AppCompatActivity() {
 
         val saveButton: Button = findViewById(R.id.btn_save)
         saveButton.setOnClickListener {
-            Log.d("Pantalla_Nota", "Botón de guardar presionado")
             val titulo = tituloEditText.text.toString()
             val contenido = contenidoEditText.text.toString()
-            guardarNota(titulo, contenido)
+            val id = generateUniqueId()
+            guardarNota(id, titulo, contenido)
         }
     }
 
-    private fun guardarNota(titulo: String, contenido: String) {
-        Log.d("Pantalla_Nota", "Guardando nota: Título - $titulo, Contenido - $contenido")
+    private fun guardarNota(id: String, titulo: String, contenido: String) {
         val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
-        val notasExistentesJson = sharedPreferences.getString("notas", "")
-        val gson = Gson()
-
-        // Lista para guardar notas existentes más la nueva
-        val notas: MutableList<Recycler_class.Nota> = if (!notasExistentesJson.isNullOrEmpty()) {
-            val type: Type = object : TypeToken<MutableList<Recycler_class.Nota>>() {}.type
-            gson.fromJson(notasExistentesJson, type)
-        } else {
-            mutableListOf()
-        }
-
-        notas.add(Recycler_class.Nota(titulo, contenido))
-
+        val nota = "$id#$titulo#$contenido"
+        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
         with(sharedPreferences.edit()) {
-            putString("notas", gson.toJson(notas))
+            putString("nota_$totalNotas", nota)
+            putInt("totalNotas", totalNotas + 1)
             apply()
         }
     }
+    private fun obtenerNotas(): List<Recycler_class.Nota> {
+        val notas = mutableListOf<Recycler_class.Nota>()
+        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
+        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
+        for (i in 0 until totalNotas) {
+            sharedPreferences.getString("nota_$i", null)?.let { nota ->
+                val partes = nota.split("#")
+                if (partes.size >= 3) {
+
+                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
+                }
+            }
+        }
+        return notas
+    }
+
+
+    private fun generateUniqueId(): String {
+        return System.currentTimeMillis().toString()
+    }
+
+
 }

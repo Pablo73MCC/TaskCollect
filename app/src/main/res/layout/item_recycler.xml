@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/bckgclr"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/edit"
+            android:src="@drawable/sexo"
             android:scaleType="centerCrop" />
 
         <LinearLayout

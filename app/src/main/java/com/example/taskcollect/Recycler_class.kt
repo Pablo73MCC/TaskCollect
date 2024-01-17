@@ -9,7 +9,7 @@ class Recycler_class(private val notas: List<Nota>) : RecyclerView.Adapter<Recyc
 
     class NotaViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
-    data class Nota(val titulo: String, val descripcion: String)
+    data class Nota(val id: String,val titulo: String, val descripcion: String)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotaViewHolder {
         val binding = ItemRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)

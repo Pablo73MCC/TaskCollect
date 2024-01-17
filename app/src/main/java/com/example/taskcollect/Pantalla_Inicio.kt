@@ -33,15 +33,23 @@ class Pantalla_Inicio : AppCompatActivity() {
     }
 
     private fun cargarNotas(): List<Recycler_class.Nota> {
+        val notas = mutableListOf<Recycler_class.Nota>()
         val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
-        val notasJson = sharedPreferences.getString("notas", null)
-        val gson = Gson()
-
-        return if (!notasJson.isNullOrEmpty()) {
-            val type: Type = object : TypeToken<List<Recycler_class.Nota>>() {}.type
-            gson.fromJson(notasJson, type)
-        } else {
-            emptyList()
+        val totalNotas = sharedPreferences.getInt("totalNotas", 0)
+        for (i in 0 until totalNotas) {
+            sharedPreferences.getString("nota_$i", null)?.let {
+                val partes = it.split("#")
+                if (partes.size >= 3) {
+                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
+                }
+            }
         }
+        return notas
+    }
+    override fun onResume() {
+        super.onResume()
+        val taskList = cargarNotas() // Carga las notas almacenadas
+        val tasksRecyclerView = findViewById<RecyclerView>(R.id.tasks_recyclerview)
+        tasksRecyclerView.adapter = Recycler_class(taskList)
     }
 }

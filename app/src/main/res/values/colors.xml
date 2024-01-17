@@ -3,9 +3,10 @@
     <!-- Colores para el modo claro -->
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="backgroundColor">#EE9FBA</color>
+    <color name="colorAccent">#A040FF</color>
+    <color name="backgroundColor">#4AC53C</color>
     <color name="buttonTextColor">#000000</color>
+    <color name="bckgclr">#F8EA6F</color>
 
     <!-- Colores para el modo oscuro -->
     <color name="colorPrimaryDarkMode">#000000</color>
