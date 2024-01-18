@@ -5,11 +5,28 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
-class Recycler_class(var notas: List<Nota>, private val clickListener: (Nota) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+class Recycler_class(private var todasLasNotas: List<Nota>, private val clickListener: (Nota) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+
+    var notas: List<Nota> = todasLasNotas
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    fun filter(query: String) {
+        notas = if (query.isEmpty()) {
+            todasLasNotas
+        } else {
+            todasLasNotas.filter {
+                it.titulo.contains(query, ignoreCase = true) || it.descripcion.contains(query, ignoreCase = true)
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     class NotaViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
-    data class Nota(val id: String, val titulo: String, val descripcion: String)
+    data class Nota(val id: String,val titulo: String, val descripcion: String)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotaViewHolder {
         val binding = ItemRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,6 +41,7 @@ class Recycler_class(var notas: List<Nota>, private val clickListener: (Nota) ->
             clickListener(nota)
         }
     }
+
 
     override fun getItemCount() = notas.size
 }
