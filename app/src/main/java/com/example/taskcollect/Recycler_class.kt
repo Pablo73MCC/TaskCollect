@@ -5,7 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
-class Recycler_class(private val notas: List<Nota>) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+class Recycler_class(private var todasLasNotas: List<Nota>, private val clickListener: (Nota) -> Unit, private val eliminarNotaListener: (String) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+
+    var notas: List<Nota> = todasLasNotas
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    fun filter(query: String) {
+        notas = if (query.isEmpty()) {
+            todasLasNotas
+        } else {
+            todasLasNotas.filter {
+                it.titulo.contains(query, ignoreCase = true) || it.descripcion.contains(query, ignoreCase = true)
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     class NotaViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -20,7 +37,21 @@ class Recycler_class(private val notas: List<Nota>) : RecyclerView.Adapter<Recyc
         val nota = notas[position]
         holder.binding.itemTitle.text = nota.titulo
         holder.binding.itemDescription.text = nota.descripcion
+        holder.itemView.setOnClickListener {
+            clickListener(nota)
+        }
+        holder.binding.btnEliminar.setOnClickListener {
+            val notaId = notas[position].id
+            eliminarNota(position)
+            eliminarNotaListener(notaId)
+        }
     }
+
+    fun eliminarNota(posicion: Int) {
+        (notas as MutableList).removeAt(posicion)
+        notifyItemRemoved(posicion)
+    }
+
 
     override fun getItemCount() = notas.size
 }

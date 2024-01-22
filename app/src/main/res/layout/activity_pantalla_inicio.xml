@@ -5,18 +5,19 @@
     android:layout_height="match_parent">
 
     <!-- SearchView para buscar las tareas -->
-    <SearchView
-        android:id="@+id/search_view"
+    <EditText
+        android:id="@+id/et_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/Sexo3"
+        android:hint="@string/Sexo3"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
+
 
     <!-- boton para agregar nuevas tareas -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,7 +37,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_view"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

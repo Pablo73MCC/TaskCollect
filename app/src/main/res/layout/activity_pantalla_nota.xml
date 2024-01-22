@@ -36,8 +36,8 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/back"
         android:contentDescription="@string/Sexo"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Sexo"
-        android:drawableEnd="@drawable/guardar"
+        android:drawableEnd="@drawable/save"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
