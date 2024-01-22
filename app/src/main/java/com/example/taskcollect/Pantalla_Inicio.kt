@@ -17,7 +17,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.taskcollect.databinding.ItemRecyclerBinding
 
 class Pantalla_Inicio : AppCompatActivity() {
 
