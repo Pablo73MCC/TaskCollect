@@ -14,12 +14,21 @@
         android:background="@color/bckgclr"
         android:padding="16dp">
 
+<!--        <ImageView-->
+<!--            android:id="@+id/item_image"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:src="@drawable/sad"-->
+<!--            android:scaleType="centerCrop" />-->
+
         <ImageView
-            android:id="@+id/item_image"
+            android:id="@+id/btnEliminar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/sad"
-            android:scaleType="centerCrop" />
+            android:src="@drawable/delete"
+            android:scaleType="centerCrop"
+            app:tint="@color/Siuuuu" />
+
 
         <LinearLayout
             android:layout_width="0dp"

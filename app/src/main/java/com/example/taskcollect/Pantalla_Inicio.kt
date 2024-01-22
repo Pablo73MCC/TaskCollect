@@ -41,7 +41,7 @@ class Pantalla_Inicio : AppCompatActivity() {
             tasksRecyclerView = findViewById(R.id.tasks_recyclerview)
             allNotes = cargarNotas()
             tasksRecyclerView.layoutManager = LinearLayoutManager(this)
-            adapter = Recycler_class(taskList) { nota ->
+            adapter = Recycler_class(taskList, { nota ->
                 // Implementación del clic en cada nota
                 val intent = Intent(this, Pantalla_Nota::class.java).apply {
                     putExtra("id", nota.id)
@@ -49,7 +49,9 @@ class Pantalla_Inicio : AppCompatActivity() {
                     putExtra("contenido", nota.descripcion)
                 }
                 startActivity(intent)
-            }
+            }, { notaId ->
+                eliminarNotaDeSharedPreferences(notaId)
+            })
 
         tasksRecyclerView.adapter = adapter
 
@@ -107,6 +109,21 @@ class Pantalla_Inicio : AppCompatActivity() {
             }
         }
         adapter.notas = filteredNotes
+        adapter.notifyDataSetChanged()
+    }
+
+    fun eliminarNotaDeSharedPreferences(idNota: String) {
+        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("nota_$idNota")
+        editor.apply()
+
+        actualizarListaDeNotas()
+    }
+
+    private fun actualizarListaDeNotas() {
+        allNotes = cargarNotas()
+        adapter.notas = allNotes
         adapter.notifyDataSetChanged()
     }
 

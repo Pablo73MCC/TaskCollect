@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
-class Recycler_class(private var todasLasNotas: List<Nota>, private val clickListener: (Nota) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+class Recycler_class(private var todasLasNotas: List<Nota>, private val clickListener: (Nota) -> Unit, private val eliminarNotaListener: (String) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
 
     var notas: List<Nota> = todasLasNotas
         set(value) {
@@ -40,6 +40,16 @@ class Recycler_class(private var todasLasNotas: List<Nota>, private val clickLis
         holder.itemView.setOnClickListener {
             clickListener(nota)
         }
+        holder.binding.btnEliminar.setOnClickListener {
+            val notaId = notas[position].id
+            eliminarNota(position)
+            eliminarNotaListener(notaId)
+        }
+    }
+
+    fun eliminarNota(posicion: Int) {
+        (notas as MutableList).removeAt(posicion)
+        notifyItemRemoved(posicion)
     }
 
 
