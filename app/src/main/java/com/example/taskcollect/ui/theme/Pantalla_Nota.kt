@@ -8,6 +8,7 @@ import com.example.taskcollect.R
 import android.content.Context
 import android.util.Log
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import com.example.taskcollect.Recycler_class
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -42,10 +43,25 @@ class Pantalla_Nota : AppCompatActivity() {
         saveButton.setOnClickListener {
             val titulo = tituloEditText.text.toString()
             val contenido = contenidoEditText.text.toString()
-            val id = notaId ?: generateUniqueId() // Usar notaId si está editando, sino generar uno nuevo
-            guardarNota(id, titulo, contenido)
-            finish()
+
+            if (titulo.isEmpty() || contenido.isEmpty()) {
+                mostrarDialogoAlerta()
+            } else {
+                val id = notaId ?: generateUniqueId() // Usar notaId si está editando, sino generar uno nuevo
+                guardarNota(id, titulo, contenido)
+                finish()
+            }
         }
+    }
+
+    private fun mostrarDialogoAlerta() {
+        AlertDialog.Builder(this)
+            .setTitle("Campos Incompletos")
+            .setMessage("Por favor, ingresa un título y contenido para la nota.")
+            .setPositiveButton("OK") { dialog, which ->
+                // Acción al presionar el botón OK, si es necesario
+            }
+            .show()
     }
 
     private fun guardarNota(id: String, titulo: String, contenido: String) {
