@@ -73,8 +73,8 @@ class Pantalla_Inicio : AppCompatActivity() {
         override fun onResume() {
             super.onResume()
             Log.d("Pantalla_Inicio", "onResume llamado")
-            val nuevasNotas = cargarNotas()
-            adapter.notas = nuevasNotas
+            allNotes = cargarNotas()
+            adapter.notas = allNotes
             adapter.notifyDataSetChanged()
         }
 
@@ -105,10 +105,12 @@ class Pantalla_Inicio : AppCompatActivity() {
         } else {
             allNotes.filter {
                 it.titulo.contains(query, ignoreCase = true) ||
+
                         it.descripcion.contains(query, ignoreCase = true)
             }
         }
         adapter.notas = filteredNotes
+        Log.d("Pantalla_Inicio", "Entro al filtro")
         adapter.notifyDataSetChanged()
     }
 
