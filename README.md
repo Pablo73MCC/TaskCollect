@@ -11,7 +11,7 @@ Esta es una aplicación de notas simple para Android. Permite a los usuarios cre
 - **Buscar Notas**: Funcionalidad de búsqueda para encontrar rápidamente notas específicas.
 - **Eliminar Notas**: Opción para eliminar notas que ya no son necesarias.
 - **Interfaz de Usuario Intuitiva**: Una interfaz fácil de usar que hace que la gestión de notas sea sencilla y eficiente.
-- **Se ve toda flama.
+- Se ve toda flama.
 
 ## Licencia
 
