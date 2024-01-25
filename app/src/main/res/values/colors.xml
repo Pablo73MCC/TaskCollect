@@ -4,15 +4,15 @@
     <!-- Colores Reales jsjsjsj-->
 
     <!-- FONDOS -->
-    <color name="fondoClaro">#FFD9CE</color>
+    <color name="fondoClaro">#E6D8D4</color>
     <color name="fondoOscuro">#2B2D42</color>
     <!-- RECYCLER -->
     <color name="recyclerClaro">#5BC0EB</color>
     <color name="recyclerOscuro">#2B48C3</color>
 
     <!-- ICONOS -->
-    <color name="iconoClaro">#EDFF86</color>
-    <color name="iconoOscuro">#FDE74C</color>
+    <color name="iconoOscuro">#EDFF86</color>
+    <color name="iconoClaro">#FDE74C</color>
 
     <!-- ICONOS SECUNDARIO -->
     <color name="ss">#AF4D98</color>

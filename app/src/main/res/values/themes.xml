@@ -2,8 +2,7 @@
 <resources>
     <!-- Estilos de botones -->
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:backgroundTint">@color/iconoClaro</item>
-        <item name="android:textColor">@color/iconoClaro</item>
+        <item name="android:textColor">@color/fondoOscuro</item>
     </style>
 
     <style name="ButtonStyle.Dark" parent="Widget.AppCompat.Button">
@@ -13,10 +12,8 @@
 
     <!-- Tema claro (por defecto) -->
     <style name="Theme.TaskCollect" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/fondoClaro</item>
-        <item name="colorPrimaryDark">@color/fondoClaro</item>
         <item name="colorAccent">@color/sss</item>
-        <item name="android:windowBackground">@color/sss</item>
+        <item name="android:windowBackground">@color/fondoClaro</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
     </style>
 

@@ -1,7 +1,9 @@
 package com.example.taskcollect
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
@@ -41,11 +43,29 @@ class Recycler_class(private var todasLasNotas: List<Nota>, private val clickLis
             clickListener(nota)
         }
         holder.binding.btnEliminar.setOnClickListener {
-            val notaId = notas[position].id
-            eliminarNota(position)
-            eliminarNotaListener(notaId)
+            mostrarDialogoConfirmacion(holder.itemView.context, position)
         }
     }
+    fun mostrarDialogoConfirmacion(context: Context, posicion: Int) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirmar eliminación")
+        builder.setMessage("¿Estás seguro de que quieres eliminar esta tarea?")
+
+        builder.setPositiveButton("Eliminar") { dialog, which ->
+            // Comprueba que el índice sigue siendo válido
+            if (posicion < notas.size) {
+                val notaId = notas[posicion].id
+                eliminarNota(posicion)
+                eliminarNotaListener(notaId)
+            }
+        }
+
+        builder.setNegativeButton("Cancelar", null)
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
     fun eliminarNota(posicion: Int) {
         (notas as MutableList).removeAt(posicion)
