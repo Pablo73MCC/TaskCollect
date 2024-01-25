@@ -5,9 +5,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import kotlin.random.Random
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
-class Recycler_class(private var todasLasNotas: List<Nota>, private val clickListener: (Nota) -> Unit, private val eliminarNotaListener: (String) -> Unit) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+class Recycler_class(
+    private var todasLasNotas: List<Nota>,
+    private val clickListener: (Nota) -> Unit,
+    private val eliminarNotaListener: (String) -> Unit
+) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+
+    // Definimos los colores que ya tenemos para esta madre
+    private val colors = intArrayOf(
+        R.color.RVF1,
+        R.color.RVF2,
+        R.color.RVF3,
+        R.color.RVF4,
+        R.color.RVF5
+    )
 
     var notas: List<Nota> = todasLasNotas
         set(value) {
@@ -45,6 +60,9 @@ class Recycler_class(private var todasLasNotas: List<Nota>, private val clickLis
         holder.binding.btnEliminar.setOnClickListener {
             mostrarDialogoConfirmacion(holder.itemView.context, position)
         }
+        // Los declaramos Random para que ponga un color de los anteriores aleatoriamente en el background
+        val randomColorRes = colors[Random.nextInt(colors.size)]
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, randomColorRes))
     }
     fun mostrarDialogoConfirmacion(context: Context, posicion: Int) {
         val builder = AlertDialog.Builder(context)
@@ -66,11 +84,12 @@ class Recycler_class(private var todasLasNotas: List<Nota>, private val clickLis
         dialog.show()
     }
 
-
     fun eliminarNota(posicion: Int) {
         (notas as MutableList).removeAt(posicion)
         notifyItemRemoved(posicion)
     }
+
+    // Esta madre es para que el color se ponga aleatorio y el usuario pueda elegirlo
 
 
     override fun getItemCount() = notas.size
