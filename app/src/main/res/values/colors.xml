@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Colores para el modo claro -->
-    <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#A040FF</color>
-    <color name="backgroundColor">#4AC53C</color>
-    <color name="buttonTextColor">#000000</color>
-    <color name="bckgclr">#F8EA6F</color>
-    <color name="Contrast">#FFFFFF</color>
-    <color name="Siuuuu">#2EBDB2</color>
-    <color name="reeeed">#E30202</color>
 
-    <!-- Colores para el modo oscuro -->
-    <color name="colorPrimaryDarkMode">#000000</color>
-    <color name="colorPrimaryDarkDarkMode">#121212</color>
-    <color name="colorAccentDarkMode">#80CBC4</color>
-    <color name="buttonColorDark">#80CBC4</color>
-    <color name="buttonTextColorDark">#000000</color>
-    <color name="backgroundColorDark">#424242</color>
+    <!-- Colores Reales jsjsjsj-->
+
+    <!-- FONDOS -->
+    <color name="fondoClaro">#E6D8D4</color>
+    <color name="fondoOscuro">#2B2D42</color>
+    <!-- RECYCLER -->
+    <color name="recyclerClaro">#5BC0EB</color>
+    <color name="recyclerOscuro">#2B48C3</color>
+
+    <!-- ICONOS -->
+    <color name="iconoOscuro">#EDFF86</color>
+    <color name="iconoClaro">#FDE74C</color>
+
+    <!-- ICONOS SECUNDARIO -->
+    <color name="ss">#AF4D98</color>
+    <color name="sss">#D66BA0</color>
 
 </resources>
