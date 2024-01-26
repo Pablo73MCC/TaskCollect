@@ -106,7 +106,8 @@ class Pantalla_Inicio : AppCompatActivity() {
             notaString?.let {
                 val partes = it.split("#")
                 if (partes.size >= 3) {
-                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
+                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.recyclerClaro)
+                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2],colorResId))
                     Log.d("Pantalla_Inicio", "Nota cargada: ${partes[1]}")
                 }
             }
@@ -136,6 +137,15 @@ class Pantalla_Inicio : AppCompatActivity() {
         editor.apply()
 
         actualizarListaDeNotas()
+    }
+
+    // Guardamos color de la nota
+    private fun guardarColorNota(notaId: String, colorResId: Int) {
+        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putInt("color_$notaId", colorResId)
+            apply()
+        }
     }
 
     private fun actualizarListaDeNotas() {

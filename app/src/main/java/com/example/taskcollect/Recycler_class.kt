@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.content.ContextCompat
-import kotlin.random.Random
 import com.example.taskcollect.databinding.ItemRecyclerBinding
 
 class Recycler_class(
@@ -14,6 +13,7 @@ class Recycler_class(
     private val clickListener: (Nota) -> Unit,
     private val eliminarNotaListener: (String) -> Unit
 ) : RecyclerView.Adapter<Recycler_class.NotaViewHolder>() {
+    private val notaColorMapa = mutableMapOf<String, Int>()
 
     // Definimos los colores que ya tenemos para esta madre
     private val colors = intArrayOf(
@@ -43,7 +43,8 @@ class Recycler_class(
 
     class NotaViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
-    data class Nota(val id: String,val titulo: String, val descripcion: String)
+    // Aqui tenemos todas las madres que se guardan xd
+    data class Nota(val id: String,val titulo: String, val descripcion: String, var colorResID: Int)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotaViewHolder {
         val binding = ItemRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -54,16 +55,17 @@ class Recycler_class(
         val nota = notas[position]
         holder.binding.itemTitle.text = nota.titulo
         holder.binding.itemDescription.text = nota.descripcion
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, nota.colorResID))
         holder.itemView.setOnClickListener {
             clickListener(nota)
         }
+
+        // Boton de evento al eliminar
         holder.binding.btnEliminar.setOnClickListener {
             mostrarDialogoConfirmacion(holder.itemView.context, position)
         }
-        // Los declaramos Random para que ponga un color de los anteriores aleatoriamente en el background
-        val randomColorRes = colors[Random.nextInt(colors.size)]
-        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, randomColorRes))
     }
+
     fun mostrarDialogoConfirmacion(context: Context, posicion: Int) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirmar eliminación")
@@ -88,8 +90,6 @@ class Recycler_class(
         (notas as MutableList).removeAt(posicion)
         notifyItemRemoved(posicion)
     }
-
-    // Esta madre es para que el color se ponga aleatorio y el usuario pueda elegirlo
 
 
     override fun getItemCount() = notas.size
