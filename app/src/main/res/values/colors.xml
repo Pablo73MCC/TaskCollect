@@ -18,4 +18,11 @@
     <color name="ss">#AF4D98</color>
     <color name="sss">#D66BA0</color>
 
+    <!-- PALETA DE COLORES DEL RECYCLER -->
+    <color name="RVF1">#D56062</color>
+    <color name="RVF2">#1985A1</color>
+    <color name="RVF3">#169873</color>
+    <color name="RVF4">#EAB464</color>
+    <color name="RVF5">#A67DB8</color>
+
 </resources>

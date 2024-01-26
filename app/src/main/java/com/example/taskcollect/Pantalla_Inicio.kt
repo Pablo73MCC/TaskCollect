@@ -16,7 +16,11 @@ import java.lang.reflect.Type
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 
 class Pantalla_Inicio : AppCompatActivity() {
 
@@ -30,6 +34,17 @@ class Pantalla_Inicio : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_inicio)
 
+
+        val editText = findViewById<EditText>(R.id.et_search)
+        editText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
 
             val addButton: FloatingActionButton = findViewById(R.id.add_button)
             addButton.setOnClickListener {
@@ -91,7 +106,8 @@ class Pantalla_Inicio : AppCompatActivity() {
             notaString?.let {
                 val partes = it.split("#")
                 if (partes.size >= 3) {
-                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2]))
+                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.recyclerClaro)
+                    notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2],colorResId))
                     Log.d("Pantalla_Inicio", "Nota cargada: ${partes[1]}")
                 }
             }
@@ -123,11 +139,27 @@ class Pantalla_Inicio : AppCompatActivity() {
         actualizarListaDeNotas()
     }
 
+    // Guardamos color de la nota
+    private fun guardarColorNota(notaId: String, colorResId: Int) {
+        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putInt("color_$notaId", colorResId)
+            apply()
+        }
+    }
+
     private fun actualizarListaDeNotas() {
         allNotes = cargarNotas()
         adapter.notas = allNotes
         adapter.notifyDataSetChanged()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
 }
