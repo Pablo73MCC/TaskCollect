@@ -12,10 +12,14 @@ import com.example.taskcollect.ui.theme.Pantalla_Nota
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 
 
 class Pantalla_Inicio : AppCompatActivity() {
@@ -24,12 +28,12 @@ class Pantalla_Inicio : AppCompatActivity() {
     private lateinit var adapter: Recycler_class
     private lateinit var searchEditText: EditText
     private var allNotes: List<Recycler_class.Nota> = listOf()
+    private var colorFiltroActual: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_inicio)
-
 
         val editText = findViewById<EditText>(R.id.et_search)
         editText.setOnEditorActionListener { v, actionId, event ->
@@ -66,7 +70,7 @@ class Pantalla_Inicio : AppCompatActivity() {
 
         tasksRecyclerView.adapter = adapter
 
-        searchEditText = findViewById(R.id.et_search) // Asegúrate de tener este ID en tu XML
+        searchEditText = findViewById(R.id.et_search)
         allNotes = cargarNotas()
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -115,6 +119,10 @@ class Pantalla_Inicio : AppCompatActivity() {
                 hideFab(btnCalendario)
                 hideFab(btnFiltro)
             }
+        }
+        // boton del filtro
+        btnFiltro.setOnClickListener {
+            mostrarSeleccionColor(this)
         }
 
 
@@ -196,5 +204,43 @@ class Pantalla_Inicio : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
+
+    // filtrar notas por color
+    private fun filtrarNotasPorColor(colorResId: Int) {
+        val notasFiltradasPorColor = if (colorFiltroActual == colorResId) {
+            colorFiltroActual = null
+            allNotes
+        } else {
+            colorFiltroActual = colorResId
+            allNotes.filter { it.colorResID == colorResId }
+        }
+        adapter.notas = notasFiltradasPorColor
+        adapter.notifyDataSetChanged()
+    }
+
+    fun mostrarSeleccionColor(context: Context) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.color_select, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        val colorChoices = listOf(
+            R.id.colorChoice1 to R.color.RVF1,
+            R.id.colorChoice2 to R.color.RVF2,
+            R.id.colorChoice3 to R.color.RVF3,
+            R.id.colorChoice4 to R.color.RVF4,
+            R.id.colorChoice5 to R.color.RVF5
+        )
+
+        for ((viewId, colorResId) in colorChoices) {
+            dialogView.findViewById<View>(viewId).setOnClickListener {
+                filtrarNotasPorColor(colorResId)
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
+    }
+
+
 
 }
