@@ -10,17 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.ui.theme.Pantalla_Nota
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+
 
 class Pantalla_Inicio : AppCompatActivity() {
 
@@ -83,7 +79,46 @@ class Pantalla_Inicio : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
         })
 
+        // Boton del menu de los menus
+        val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+        val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+        val btnTools: FloatingActionButton = findViewById(R.id.btn_tools)
+
+        // Configura un listener para btn_tools
+        btnTools.setOnClickListener {
+            // Verifica si los botones están visibles o no
+            val newVisibility = if (btnCalendario.visibility == View.GONE) View.VISIBLE else View.GONE
+
+            // Cambia la visibilidad de btn_calendario_mn y btn_filtro_mn
+            btnCalendario.visibility = newVisibility
+            btnFiltro.visibility = newVisibility
         }
+        // Función para animar la aparición del botón
+        fun showFab(fab: FloatingActionButton) {
+            fab.scaleX = 0f
+            fab.scaleY = 0f
+            fab.visibility = View.VISIBLE
+            fab.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+        }
+
+        fun hideFab(fab: FloatingActionButton) {
+            fab.animate().scaleX(0f).scaleY(0f).setDuration(200).withEndAction {
+                fab.visibility = View.GONE
+            }.start()
+        }
+
+        btnTools.setOnClickListener {
+            if (btnCalendario.visibility == View.GONE) {
+                showFab(btnCalendario)
+                showFab(btnFiltro)
+            } else {
+                hideFab(btnCalendario)
+                hideFab(btnFiltro)
+            }
+        }
+
+
+    }
 
         override fun onResume() {
             super.onResume()
@@ -106,7 +141,7 @@ class Pantalla_Inicio : AppCompatActivity() {
             notaString?.let {
                 val partes = it.split("#")
                 if (partes.size >= 3) {
-                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.recyclerClaro)
+                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.RVF2)
                     notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2],colorResId))
                     Log.d("Pantalla_Inicio", "Nota cargada: ${partes[1]}")
                 }

@@ -2,36 +2,36 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:columnCount="5"
-    android:padding="16dp">
+    android:padding="1dp">
 
     <!-- Define tus colores aquí -->
     <View android:id="@+id/colorChoice1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/RVF1"
         android:layout_margin="4dp" />
 
     <View android:id="@+id/colorChoice2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/RVF2"
         android:layout_margin="4dp" />
 
     <View android:id="@+id/colorChoice3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/RVF3"
         android:layout_margin="4dp" />
 
     <View android:id="@+id/colorChoice4"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/RVF4"
         android:layout_margin="4dp" />
 
     <View android:id="@+id/colorChoice5"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/RVF5"
         android:layout_margin="4dp" />
 

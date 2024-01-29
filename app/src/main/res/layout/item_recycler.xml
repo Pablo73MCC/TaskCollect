@@ -26,7 +26,7 @@
             android:id="@+id/item_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/tools"
+            android:src="@drawable/colores"
             android:scaleType="centerCrop" />
 
         <LinearLayout
