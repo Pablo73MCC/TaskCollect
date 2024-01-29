@@ -127,10 +127,10 @@ class Recycler_class(
 
     fun actualizarColorNota(context: Context, nota: Recycler_class.Nota, @ColorRes colorResId: Int) {
         val position = notas.indexOf(nota)
-        if (position != -1) { // Asegúrate de que la nota esté en la lista antes de proceder
+        if (position != -1) {
             nota.colorResID = colorResId // Aquí se actualiza la propiedad de la nota
-            notifyItemChanged(position) // Aquí se notifica al adaptador sobre el cambio en la nota específica
-            guardarColorNota(context, nota.id, colorResId) // Aquí se guarda el color en SharedPreferences
+            notifyItemChanged(position)
+            guardarColorNota(context, nota.id, colorResId) // Aquí se guarda el color en el SharedPreferences
         }
     }
 

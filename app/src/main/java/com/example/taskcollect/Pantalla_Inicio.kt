@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskcollect.ui.theme.Pantalla_Nota
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -21,6 +18,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+
 
 class Pantalla_Inicio : AppCompatActivity() {
 
@@ -28,12 +28,12 @@ class Pantalla_Inicio : AppCompatActivity() {
     private lateinit var adapter: Recycler_class
     private lateinit var searchEditText: EditText
     private var allNotes: List<Recycler_class.Nota> = listOf()
+    private var colorFiltroActual: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_inicio)
-
 
         val editText = findViewById<EditText>(R.id.et_search)
         editText.setOnEditorActionListener { v, actionId, event ->
@@ -70,7 +70,7 @@ class Pantalla_Inicio : AppCompatActivity() {
 
         tasksRecyclerView.adapter = adapter
 
-        searchEditText = findViewById(R.id.et_search) // Asegúrate de tener este ID en tu XML
+        searchEditText = findViewById(R.id.et_search)
         allNotes = cargarNotas()
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -83,7 +83,50 @@ class Pantalla_Inicio : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
         })
 
+        // Boton del menu de los menus
+        val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+        val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+        val btnTools: FloatingActionButton = findViewById(R.id.btn_tools)
+
+        // Configura un listener para btn_tools
+        btnTools.setOnClickListener {
+            // Verifica si los botones están visibles o no
+            val newVisibility = if (btnCalendario.visibility == View.GONE) View.VISIBLE else View.GONE
+
+            // Cambia la visibilidad de btn_calendario_mn y btn_filtro_mn
+            btnCalendario.visibility = newVisibility
+            btnFiltro.visibility = newVisibility
         }
+        // Función para animar la aparición del botón
+        fun showFab(fab: FloatingActionButton) {
+            fab.scaleX = 0f
+            fab.scaleY = 0f
+            fab.visibility = View.VISIBLE
+            fab.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+        }
+
+        fun hideFab(fab: FloatingActionButton) {
+            fab.animate().scaleX(0f).scaleY(0f).setDuration(200).withEndAction {
+                fab.visibility = View.GONE
+            }.start()
+        }
+
+        btnTools.setOnClickListener {
+            if (btnCalendario.visibility == View.GONE) {
+                showFab(btnCalendario)
+                showFab(btnFiltro)
+            } else {
+                hideFab(btnCalendario)
+                hideFab(btnFiltro)
+            }
+        }
+        // boton del filtro
+        btnFiltro.setOnClickListener {
+            mostrarSeleccionColor(this)
+        }
+
+
+    }
 
         override fun onResume() {
             super.onResume()
@@ -106,7 +149,7 @@ class Pantalla_Inicio : AppCompatActivity() {
             notaString?.let {
                 val partes = it.split("#")
                 if (partes.size >= 3) {
-                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.recyclerClaro)
+                    val colorResId = sharedPreferences.getInt("color_${partes[0]}", R.color.RVF2)
                     notas.add(Recycler_class.Nota(partes[0], partes[1], partes[2],colorResId))
                     Log.d("Pantalla_Inicio", "Nota cargada: ${partes[1]}")
                 }
@@ -161,5 +204,43 @@ class Pantalla_Inicio : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
+
+    // filtrar notas por color
+    private fun filtrarNotasPorColor(colorResId: Int) {
+        val notasFiltradasPorColor = if (colorFiltroActual == colorResId) {
+            colorFiltroActual = null
+            allNotes
+        } else {
+            colorFiltroActual = colorResId
+            allNotes.filter { it.colorResID == colorResId }
+        }
+        adapter.notas = notasFiltradasPorColor
+        adapter.notifyDataSetChanged()
+    }
+
+    fun mostrarSeleccionColor(context: Context) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.color_select, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        val colorChoices = listOf(
+            R.id.colorChoice1 to R.color.RVF1,
+            R.id.colorChoice2 to R.color.RVF2,
+            R.id.colorChoice3 to R.color.RVF3,
+            R.id.colorChoice4 to R.color.RVF4,
+            R.id.colorChoice5 to R.color.RVF5
+        )
+
+        for ((viewId, colorResId) in colorChoices) {
+            dialogView.findViewById<View>(viewId).setOnClickListener {
+                filtrarNotasPorColor(colorResId)
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
+    }
+
+
 
 }

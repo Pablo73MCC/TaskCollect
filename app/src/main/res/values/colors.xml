@@ -2,6 +2,7 @@
 <resources>
 
     <!-- Colores Reales jsjsjsj-->
+    <color name="black">#000000</color>
 
     <!-- FONDOS -->
     <color name="fondoClaro">#E6D8D4</color>
