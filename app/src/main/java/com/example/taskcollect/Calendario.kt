@@ -1,9 +1,12 @@
 package com.example.taskcollect
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.taskcollect.ui.theme.Pantalla_Nota
 
 class Calendario : AppCompatActivity() {
     private lateinit var agendaRecyclerView: RecyclerView
@@ -11,9 +14,20 @@ class Calendario : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario)
 
+        // Esta madre es el boton de regresar
+        val backButton: ImageButton = findViewById(R.id.btn_back)
+        backButton.setOnClickListener {
+            finish()
+        }
+
         agendaRecyclerView = findViewById(R.id.agendaRecyclerView)
-        val timeSlots = obtenerEspaciosDeTiempoParaElDia() // Asume que esta función devuelve la lista de horas
-        val adapter = RecyclerClass_calendario(timeSlots)
+        val timeSlots = obtenerEspaciosDeTiempoParaElDia()
+
+        val adapter = RecyclerClass_calendario(timeSlots) { timeSlot ->
+            val intent = Intent(this, Pantalla_Nota::class.java)
+            intent.putExtra("timeSlot", timeSlot)
+            startActivity(intent)
+        }
 
         agendaRecyclerView.layoutManager = LinearLayoutManager(this)
         agendaRecyclerView.adapter = adapter
