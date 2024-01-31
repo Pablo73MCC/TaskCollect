@@ -13,7 +13,7 @@
 
     <!-- ICONOS -->
     <color name="iconoOscuro">#EDFF86</color>
-    <color name="iconoClaro">#FDE74C</color>
+    <color name="iconoClaro">#515151</color>
 
     <!-- ICONOS SECUNDARIO -->
     <color name="ss">#AF4D98</color>
@@ -21,8 +21,8 @@
 
     <!-- PALETA DE COLORES DEL RECYCLER -->
     <color name="RVF1">#D56062</color>
-    <color name="RVF2">#1985A1</color>
-    <color name="RVF3">#169873</color>
+    <color name="RVF2">#47AFCA</color>
+    <color name="RVF3">#45C39F</color>
     <color name="RVF4">#EAB464</color>
     <color name="RVF5">#A67DB8</color>
 
