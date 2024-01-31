@@ -45,10 +45,16 @@ class Pantalla_Inicio : AppCompatActivity() {
                 false
             }
         }
-
+            // boton que te lleva a la crear notas
             val addButton: FloatingActionButton = findViewById(R.id.add_button)
             addButton.setOnClickListener {
                 val intent = Intent(this, Pantalla_Nota::class.java)
+                startActivity(intent)
+            }
+            // Boton que te lleva al calendario we
+            val btn_calendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+            btn_calendario.setOnClickListener {
+                val intent = Intent(this, Calendario::class.java)
                 startActivity(intent)
             }
 
