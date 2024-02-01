@@ -38,7 +38,21 @@ class Recycler_class(
     class NotaViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
     // Aqui tenemos todas las madres que se guardan xd
-    data class Nota(val id: String,val titulo: String, val descripcion: String, var colorResID: Int)
+    data class Nota( // No incluyes el ID aquí si está siendo autoincrementado por la base de datos
+        val titulo: String,
+        val descripcion: String,
+        val fecha: String?, // Asumiendo que almacenarás la fecha como texto, por ejemplo, "2024-02-01"
+        val hora: String?, // Asumiendo que almacenarás la hora como texto, por ejemplo, "14:30"
+        val orden: Int?,
+        val evento: String?, // Este podría ser un ID que referencia a una entrada en una tabla de eventos
+        val icono: String?, // Este podría ser un recurso o un identificador de un icono
+        val notificacion: Int?, // Asumiendo que es la cantidad de minutos para la notificación
+        val color: String, // Asumiendo que almacenarás el color como texto, por ejemplo, "#FFFFFF"
+        val recurrencia: String?, // Puede ser "diario", "semanal", etc.
+        val intervalo: Int?, // Cantidad de tiempo para la recurrencia
+        val finIntervalo: String?, // Fecha de finalización de la recurrencia, si aplica
+        var id: Int? = null // El ID puede ser nulo si la nota es nueva y aún no ha sido insertada en la base de datos
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotaViewHolder {
         val binding = ItemRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
