@@ -9,7 +9,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         // Informacion de la base de datos
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "TaskCollect.db"
 
         // Tabla Historico de notas
@@ -41,8 +41,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_CAT_NOT_ID = "CAT_NOT_ID" // Guardar id
         private const val COLUMN_CAT_NOT_TIEMPO = "CAT_NOT_TIEMPO" // Guardar tiempo en min
         private const val COLUMN_CAT_NOT_DESCRIPCION = "CAT_NOT_DESCRIPCION" // descripcion del tiempo total
+
     }
 
+    //Esta madre solo se ejecuta cuando se instale por primera vez la app
     override fun onCreate(db: SQLiteDatabase) {
         // Crear tabla HIST_NOTAS
         val CREATE_TABLE_HIST_NOTAS = """
@@ -84,12 +86,45 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         )
     """.trimIndent()
         db.execSQL(CREATE_TABLE_CAT_NOTIFICACIONES)
+
+        // Insertamos los datos a la tabla de Cat_Eventos
+        val pito = """
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Año Nuevo', '🎉', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Día de Reyes', '👑', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Día de la Constitución', '📜', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Natalicio de Benito Juárez', '🎩', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Día del Trabajo', '🛠', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Día de la Independencia', '🇲🇽', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Día de Muertos', '💀', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Revolución Mexicana', '🚂', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Navidad', '🎄', 0);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Cumpleaños', '🎂', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Reunión con amigos', '🍻', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Salida al cine', '🎬', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Camping', '⛺', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Concierto', '🎵', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Cita', '❤️', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Brunch Dominical', '🥞', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Noche de Tacos', '🌮', 1);
+        INSERT INTO cat_eventos (CAT_EV_TIPO, CAT_EV_ICONO, CAT_EV_VISIBILIDAD) VALUES ('Viernes de Tacos', '🌮🌮', 1);
+    """.trimIndent()
+
+        pito.split(";").forEach { sql ->
+            if (sql.trim().isNotEmpty()) {
+                db.execSQL(sql)
+            }
+        }
     }
 
     // Método para actualizar la base de datos en caso de una nueva versión, esto es lo mas basico del  mundo we
     // No me mates Erick
     // Sexo
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < newVersion) {
+
+
+        }
+        // Arreglar esta madre
         // Eliminar las tablas existentes
         db.execSQL("DROP TABLE IF EXISTS $TABLE_HIST_NOTAS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CAT_EVENTOS")
