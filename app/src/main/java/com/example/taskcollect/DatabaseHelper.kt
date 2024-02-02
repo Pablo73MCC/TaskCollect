@@ -100,7 +100,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // Metodo para agregar notas
-    fun addNota(nota: Recycler_class.Nota): Long {
+    fun addNota(nota: Nota): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_HIST_NT_TITULO, nota.titulo)
@@ -119,13 +119,41 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         // Insertar la nota en la base de datos y retornar el ID de la fila nueva
         val id = db.insert(TABLE_HIST_NOTAS, null, values)
-        db.close() // Cerrar la base de datos para liberar recursos
+        //db.close() // Cerrar la base de datos para liberar recursos
         return id // Retorna el ID de la fila insertada, o -1 si ocurrió un error
     }
 
+    fun getNota(id: Int): Nota? {
+        val db = this.readableDatabase
+        var nota: Nota? = null
+        val selectQuery = "SELECT * FROM $TABLE_HIST_NOTAS WHERE $COLUMN_HIST_NT_ID = ?"
+        val cursor = db.rawQuery(selectQuery, arrayOf(id.toString()))
+
+        if (cursor.moveToFirst()) {
+            nota = Nota(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_ID)),
+                titulo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_TITULO)),
+                descripcion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_DESCRIPCION)),
+                fecha = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_FECHA)),
+                hora = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_HORA)),
+                orden = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_ORDEN)),
+                evento = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_EVENTO)),
+                icono = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_ICONO)),
+                notificacion = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_NOTIFICACION)),
+                color = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_COLOR)),
+                recurrencia = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_RECURRENCIA)),
+                intervalo = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_INTERVALO)),
+                finIntervalo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_FNINTERVALO))
+            )
+        }
+        cursor.close()
+        //db.close()
+        return nota
+    }
+
     // Metodo para obtener las notas
-    fun getAllNotas(): List<Recycler_class.Nota> {
-        val listaDeNotas = mutableListOf<Recycler_class.Nota>()
+    fun getAllNotas(): MutableList<Nota> {
+        val listaDeNotas = mutableListOf<Nota>()
         val db = this.readableDatabase
         val selectQuery = "SELECT * FROM $TABLE_HIST_NOTAS ORDER BY $COLUMN_HIST_NT_ORDEN ASC"
 
@@ -133,7 +161,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         if (cursor.moveToFirst()) {
             do {
-                val nota = Recycler_class.Nota(
+                val nota = Nota(
                     id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_ID)),
                     titulo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_TITULO)),
                     descripcion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HIST_NT_DESCRIPCION)),
@@ -152,12 +180,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             } while (cursor.moveToNext())
         }
         cursor.close()
-        db.close()
+        //db.close()
         return listaDeNotas
     }
 
     // Metodo para Actualizar las notas
-    fun updateNota(nota: Recycler_class.Nota) {
+    fun updateNota(nota: Nota) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_HIST_NT_TITULO, nota.titulo)
@@ -176,7 +204,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         // Aquí se asume que nota.id no es nulo
         val result = db.update(TABLE_HIST_NOTAS, values, "$COLUMN_HIST_NT_ID = ?", arrayOf(nota.id.toString()))
-        db.close()
+        //db.close()
     }
 
     // Metodo para eliminar las notas
@@ -184,7 +212,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.writableDatabase
         // Ejecutar la operación de eliminación
         db.delete(TABLE_HIST_NOTAS, "$COLUMN_HIST_NT_ID = ?", arrayOf(id.toString()))
-        db.close()
+        //db.close()
     }
 }
 

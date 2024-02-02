@@ -5,38 +5,35 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import com.example.taskcollect.R
-import android.content.Context
-import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import com.example.taskcollect.Recycler_class
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
-
+import com.example.taskcollect.DatabaseHelper
+import com.example.taskcollect.Nota
 class Pantalla_Nota : AppCompatActivity() {
 
-    private var notaId: String? = null
+    private var notaId: Int? = null // Cambiado a Int, ya que la base de datos usa Int como ID
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_nota)
 
-        // Esta madre es el boton de regresar
+        dbHelper = DatabaseHelper(this)
+
         val backButton: ImageButton = findViewById(R.id.btn_back)
         backButton.setOnClickListener {
             finish()
         }
 
-        // Esta madre es el boton de guardar y te regresa a la pagina de inicio
         val tituloEditText: EditText = findViewById(R.id.txt_titulo)
         val contenidoEditText: EditText = findViewById(R.id.txt_nota)
 
-        // Verificar si estamos editando una nota existente
-        notaId = intent.getStringExtra("id") // El ID de la nota si se está editando, o null si es nueva
-        if(notaId != null) {
-            // Estamos editando una nota existente
-            tituloEditText.setText(intent.getStringExtra("titulo"))
-            contenidoEditText.setText(intent.getStringExtra("contenido"))
+        notaId = intent.getIntExtra("id", -1).takeIf { it != -1 }
+
+        notaId?.let { id ->
+            val nota = dbHelper.getNota(id)
+            tituloEditText.setText(nota?.titulo)
+            contenidoEditText.setText(nota?.descripcion)
         }
 
         val saveButton: Button = findViewById(R.id.btn_save)
@@ -47,8 +44,27 @@ class Pantalla_Nota : AppCompatActivity() {
             if (titulo.isEmpty() || contenido.isEmpty()) {
                 mostrarDialogoAlerta()
             } else {
-                val id = notaId ?: generateUniqueId() // Usar notaId si está editando, sino generar uno nuevo
-                guardarNota(id, titulo, contenido)
+                val nota = Nota(
+                    id = notaId,
+                    titulo = titulo,
+                    descripcion = contenido,
+                    // Asumiendo que los campos siguientes pueden ser nulos o tienen valores por defecto
+                    fecha = null,
+                    hora = null,
+                    orden = null,
+                    evento = null,
+                    icono = null,
+                    notificacion = null,
+                    color = "#FFFFFF",
+                    recurrencia = null,
+                    intervalo = null,
+                    finIntervalo = null
+                )
+                if(notaId == null) {
+                    dbHelper.addNota(nota) // Insertar nueva nota
+                } else {
+                    dbHelper.updateNota(nota) // Actualizar nota existente
+                }
                 finish()
             }
         }
@@ -58,33 +74,7 @@ class Pantalla_Nota : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Campos Incompletos")
             .setMessage("Por favor, ingresa un título y contenido para la nota.")
-            .setPositiveButton("OK") { dialog, which ->
-                // Acción al presionar el botón OK, si es necesario
-            }
+            .setPositiveButton("OK", null)
             .show()
     }
-
-    private fun guardarNota(id: String, titulo: String, contenido: String) {
-        val sharedPreferences = getSharedPreferences("MisNotas", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        // Si es una nueva nota, actualizamos el contador de totalNotas y usamos ese contador como ID.
-        val nuevaId = if (notaId == null) {
-            val totalNotas = sharedPreferences.getInt("totalNotas", 0)
-            editor.putInt("totalNotas", totalNotas + 1)
-            totalNotas.toString()
-        } else {
-            id
-        }
-        editor.putString("nota_$nuevaId", "$nuevaId#$titulo#$contenido")
-        editor.apply()
-
-        Log.d("Pantalla_Nota", "Nota guardada: $titulo con ID: $nuevaId")
-    }
-
-
-    private fun generateUniqueId(): String {
-        return System.currentTimeMillis().toString()
-    }
-
-
 }
