@@ -17,6 +17,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.example.taskcollect.Clases.Color_Select
+import com.example.taskcollect.databinding.ColorSelectBinding
 import com.example.taskcollect.ui.theme.Pantalla_Nota
 
 
@@ -85,34 +87,32 @@ class Pantalla_Inicio : AppCompatActivity() {
             startActivity(intent)
         }
     }
-        private fun botonesExtra () {
-            val btnMain: FloatingActionButton =
-                findViewById(R.id.btn_tools)
-            val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
-            val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+    private fun botonesExtra() {
+        val btnMain: FloatingActionButton = findViewById(R.id.btn_tools)
+        val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+        val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
 
-            btnMain.setOnClickListener {
-                if (btnCalendario.visibility == View.GONE) {
-                    btnCalendario.show()
-                    btnFiltro.show()
-                } else {
-                    btnCalendario.hide()
-                    btnFiltro.hide()
-                }
-            }
-            // Esta es la perra mamada del calendario
-            val calendarButton: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
-            calendarButton.setOnClickListener {
-                val intent = Intent(this, Calendario::class.java)
-                startActivity(intent)
-            }
-            // Aqui va el perro filtro
-            val fab: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
-            fab.setOnClickListener {
-                val dialog = ColorSelectDialogFragment()
-                dialog.show(supportFragmentManager, "colorSelect")
+        // Listener para el botón principal que muestra u oculta los otros botones
+        btnMain.setOnClickListener {
+            if (btnCalendario.visibility == View.GONE) {
+                btnCalendario.show()
+                btnFiltro.show()
+            } else {
+                btnCalendario.hide()
+                btnFiltro.hide()
             }
         }
+        // Listener para el botón del calendario
+        btnCalendario.setOnClickListener {
+            val intent = Intent(this, Calendario::class.java)
+            startActivity(intent)
+        }
+        // Listener para el botón del filtro
+        btnFiltro.setOnClickListener {
+            val dialog = Color_Select()
+            dialog.show(supportFragmentManager, "colorSelect")
+        }
+    }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
@@ -120,11 +120,6 @@ class Pantalla_Inicio : AppCompatActivity() {
             imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
-    }
-}
-class ColorSelectDialogFragment : DialogFragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.color_select, container, false)
     }
 }
 
