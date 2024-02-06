@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.example.taskcollect.ui.theme.Pantalla_Nota
 
 
@@ -60,6 +64,7 @@ class Pantalla_Inicio : AppCompatActivity() {
         tasksRecyclerView.adapter = adapter
 
         configurarInteraccionesUI()
+        botonesExtra()
     }
 
     override fun onResume() {
@@ -74,15 +79,40 @@ class Pantalla_Inicio : AppCompatActivity() {
     }
 
     private fun configurarInteraccionesUI() {
-        // Configura aquí el resto de tu UI, como botones flotantes y el buscador
         val addButton: FloatingActionButton = findViewById(R.id.add_button)
         addButton.setOnClickListener {
             val intent = Intent(this, Pantalla_Nota::class.java)
             startActivity(intent)
         }
-
-        // Implementa aquí los demás botones y funciones
     }
+        private fun botonesExtra () {
+            val btnMain: FloatingActionButton =
+                findViewById(R.id.btn_tools)
+            val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+            val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+
+            btnMain.setOnClickListener {
+                if (btnCalendario.visibility == View.GONE) {
+                    btnCalendario.show()
+                    btnFiltro.show()
+                } else {
+                    btnCalendario.hide()
+                    btnFiltro.hide()
+                }
+            }
+            // Esta es la perra mamada del calendario
+            val calendarButton: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+            calendarButton.setOnClickListener {
+                val intent = Intent(this, Calendario::class.java)
+                startActivity(intent)
+            }
+            // Aqui va el perro filtro
+            val fab: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+            fab.setOnClickListener {
+                val dialog = ColorSelectDialogFragment()
+                dialog.show(supportFragmentManager, "colorSelect")
+            }
+        }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
@@ -92,3 +122,130 @@ class Pantalla_Inicio : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 }
+class ColorSelectDialogFragment : DialogFragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.color_select, container, false)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Es la primera vez
+// Que invito a alguien desde que te fuiste
+// Y estoy bien
+// El mismo restaurante
+// Pero a ella sí le dan risa mis chistes
+// Y estoy bien
+// Ella sí se lleva bien con mis amigos
+// Nunca discutimos
+// Es lo que siempre he querido
+// Pero cuando la miro a los ojos
+// Veo que no son
+// Tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// El cielo azul parece gris
+// Desde que ya no estás aquí
+// Todo el color ahora es blanco y negro
+// Y como no te puedo hablar
+// Ni regresar el tiempo atrás
+// Mejor al Sol lo tapo con un dedo
+// Sus labios lucen de rojo
+// Nos vemos bien de la mano
+// Y me gusta el verde en sus ojos
+// Si no los comparo
+// Con tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Oh-oh-oh
+// Sin tus ojos marrones
+// Ah-ah
+// Ella sí se lleva bien con mis amigos
+// Nunca discutimos
+// Es lo que siempre he querido
+// Pero cuando la miro a los ojos
+// Veo que no son
+// Tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada es igual, nada es igual, nada
+// Sin tus ojos marrones
+// Nada, nada es igual
+// (Nada es igual, nada es igual, nada es igual) nada es igual
+// Nada es igual sin tus ojos marrones
+// (Nada es igual, nada es igual, nada es igual) sin tus ojos marrones
+// Ayayay, sin tus ojos marrones
+// (Nada es igual, nada es igual, nada es igual)
