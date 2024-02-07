@@ -3,43 +3,40 @@ package com.example.taskcollect
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import com.example.taskcollect.Clases.Color_Select
+import com.example.taskcollect.databinding.ActivityPantallaInicioBinding
 import com.example.taskcollect.databinding.ColorSelectBinding
 import com.example.taskcollect.ui.theme.Pantalla_Nota
 
 
 class Pantalla_Inicio : AppCompatActivity() {
 
-
-    private lateinit var tasksRecyclerView: RecyclerView
+    private lateinit var binding: ActivityPantallaInicioBinding
     private lateinit var adapter: Recycler_class
-    private lateinit var searchEditText: EditText
     private var dbHelper: DatabaseHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pantalla_inicio)
+        binding = ActivityPantallaInicioBinding.inflate(layoutInflater)
+
+        // Esta madre lo que hace es utilizar la vista inflada y configurada a través del View Binding
+        setContentView(binding.root)
+//        setContentView(R.layout.activity_pantalla_inicio)
 
         dbHelper = DatabaseHelper(this)
         val taskList: MutableList<Nota> = dbHelper?.getAllNotas() ?: mutableListOf()
 
-
-        tasksRecyclerView = findViewById(R.id.tasks_recyclerview)
-        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
+        // Cambia
+        binding.tasksRecyclerview.layoutManager = LinearLayoutManager(this)
+//        tasksRecyclerView = findViewById(R.id.tasks_recyclerview)
+//        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = Recycler_class(this, taskList, { nota ->
             // Implementación del clic en cada nota
             val intent = Intent(this, Pantalla_Nota::class.java).apply {
@@ -63,7 +60,7 @@ class Pantalla_Inicio : AppCompatActivity() {
             actualizarListaDeNotas()
         })
 
-        tasksRecyclerView.adapter = adapter
+        binding.tasksRecyclerview.adapter = adapter
 
         configurarInteraccionesUI()
         botonesExtra()
@@ -81,16 +78,18 @@ class Pantalla_Inicio : AppCompatActivity() {
     }
 
     private fun configurarInteraccionesUI() {
-        val addButton: FloatingActionButton = findViewById(R.id.add_button)
-        addButton.setOnClickListener {
+            binding.addButton.setOnClickListener{
             val intent = Intent(this, Pantalla_Nota::class.java)
             startActivity(intent)
         }
     }
     private fun botonesExtra() {
-        val btnMain: FloatingActionButton = findViewById(R.id.btn_tools)
-        val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
-        val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
+        val btnMain = binding.btnTools
+        val btnCalendario = binding.btnCalendarioMn
+        val btnFiltro = binding.btnFiltroMn
+//        val btnMain: FloatingActionButton = findViewById(R.id.btn_tools)
+//        val btnCalendario: FloatingActionButton = findViewById(R.id.btn_calendario_mn)
+//        val btnFiltro: FloatingActionButton = findViewById(R.id.btn_filtro_mn)
 
         // Listener para el botón principal que muestra u oculta los otros botones
         btnMain.setOnClickListener {
@@ -114,6 +113,8 @@ class Pantalla_Inicio : AppCompatActivity() {
         }
     }
 
+
+    // Esta mamada de cerrar el teclado de afuerzas
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
