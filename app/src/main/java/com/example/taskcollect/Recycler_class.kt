@@ -1,12 +1,16 @@
 package com.example.taskcollect
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.content.ContextCompat
+import com.example.taskcollect.Clases.Color_Change
 import com.example.taskcollect.databinding.ItemRecyclerBinding
+
 class Recycler_class(
     private val context: Context,
     private var todasLasNotas: MutableList<Nota>,
@@ -57,6 +61,11 @@ class Recycler_class(
         holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.RVF2))
         holder.itemView.setOnClickListener {
             clickListener(nota)
+            // Aqui ponemos la accion del btn de cambio de color
+            holder.binding.itemImage.setOnClickListener {
+                val colorChangeDialog = Color_Change()
+                colorChangeDialog.show((context as AppCompatActivity).supportFragmentManager, "colorChange")
+            }
         }
 
         // Boton de evento al eliminar

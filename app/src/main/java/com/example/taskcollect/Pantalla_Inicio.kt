@@ -33,7 +33,7 @@ class Pantalla_Inicio : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
         val taskList: MutableList<Nota> = dbHelper?.getAllNotas() ?: mutableListOf()
 
-        // Cambia
+        // Cambia el findViewById ya que proporciona acceso directo a la vista
         binding.tasksRecyclerview.layoutManager = LinearLayoutManager(this)
 //        tasksRecyclerView = findViewById(R.id.tasks_recyclerview)
 //        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -112,7 +112,6 @@ class Pantalla_Inicio : AppCompatActivity() {
             dialog.show(supportFragmentManager, "colorSelect")
         }
     }
-
 
     // Esta mamada de cerrar el teclado de afuerzas
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

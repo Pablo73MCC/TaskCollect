@@ -51,6 +51,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation ("androidx.recyclerview:recyclerview:1.2.1") // Asegúrate de usar la última versión
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("com.google.code.gson:gson:2.8.6")
