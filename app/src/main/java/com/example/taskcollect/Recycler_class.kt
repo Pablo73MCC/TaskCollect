@@ -59,18 +59,16 @@ class Recycler_class(
         holder.binding.itemTitle.text = nota.titulo
         holder.binding.itemDescription.text = nota.descripcion
         holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.RVF2))
+
+        // Manejador de clics para el itemView
         holder.itemView.setOnClickListener {
             clickListener(nota)
-            // Aqui ponemos la accion del btn de cambio de color
-            holder.binding.itemImage.setOnClickListener {
-                val colorChangeDialog = Color_Change()
-                colorChangeDialog.show((context as AppCompatActivity).supportFragmentManager, "colorChange")
-            }
         }
 
-        // Boton de evento al eliminar
-        holder.binding.btnEliminar.setOnClickListener {
-            mostrarDialogoConfirmacion(holder.itemView.context, nota)
+        // Manejador de clics para el botón de editar, separado del itemView
+        holder.binding.itemImage.setOnClickListener {
+            val colorChangeDialog = Color_Change()
+            colorChangeDialog.show((context as AppCompatActivity).supportFragmentManager, "colorChange")
         }
     }
 

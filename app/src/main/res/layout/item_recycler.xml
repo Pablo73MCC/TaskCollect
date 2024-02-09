@@ -14,13 +14,13 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/btnEliminar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/delete"
-            android:scaleType="centerCrop"
-            app:tint="@color/iconoClaro" />
+<!--        <ImageView-->
+<!--            android:id="@+id/btnEliminar"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:src="@drawable/delete"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            app:tint="@color/iconoClaro" />-->
 
         <ImageView
             android:id="@+id/item_image"

@@ -36,6 +36,7 @@ class Pantalla_Nota : AppCompatActivity() {
             contenidoEditText.setText(nota?.descripcion)
         }
 
+        // Aqui guardamos la informacion de la nota a la base
         val saveButton: Button = findViewById(R.id.btn_save)
         saveButton.setOnClickListener {
             val titulo = tituloEditText.text.toString()
@@ -55,7 +56,7 @@ class Pantalla_Nota : AppCompatActivity() {
                     evento = null,
                     icono = null,
                     notificacion = null,
-                    color = "#FFFFFF",
+                    color = "#47AFCA",
                     recurrencia = null,
                     intervalo = null,
                     finIntervalo = null

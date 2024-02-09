@@ -1,8 +1,8 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:columnCount="5"
-    android:padding="1dp">
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <!-- Define tus colores aquí -->
     <View android:id="@+id/colorChoice2"
@@ -35,4 +35,43 @@
         android:background="@color/RVF5"
         android:layout_margin="4dp" />
 
-</GridLayout>
+</LinearLayout >
+
+<!--<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:columnCount="5"-->
+<!--    android:padding="1dp">-->
+
+<!--    &lt;!&ndash; Define tus colores aquí &ndash;&gt;-->
+<!--    <View android:id="@+id/colorChoice2"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@color/RVF2"-->
+<!--        android:layout_margin="4dp" />-->
+
+<!--    <View android:id="@+id/colorChoice3"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@color/RVF3"-->
+<!--        android:layout_margin="4dp" />-->
+
+<!--    <View android:id="@+id/colorChoice4"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@color/RVF4"-->
+<!--        android:layout_margin="4dp" />-->
+
+<!--    <View android:id="@+id/colorChoice1"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@color/RVF1"-->
+<!--        android:layout_margin="4dp" />-->
+
+<!--    <View android:id="@+id/colorChoice5"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@color/RVF5"-->
+<!--        android:layout_margin="4dp" />-->
+
+<!--</GridLayout>-->
